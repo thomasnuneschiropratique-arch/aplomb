@@ -1,0 +1,1 @@
+import{o as e}from"./types-Cie-K8QH.js";function t(t,n){let r=+e(t)-e(n);return r<0?-1:r>0?1:r}export{t};

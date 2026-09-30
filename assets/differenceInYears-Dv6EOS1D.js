@@ -1,0 +1,1 @@
+import{t as e}from"./compareAsc-GEQ_JfD_.js";import{st as t}from"./index-BZDeo_q0.js";function n(e,n,r){let[i,a]=t(r?.in,e,n);return i.getFullYear()-a.getFullYear()}function r(r,i,a){let[o,s]=t(a?.in,r,i),c=e(o,s),l=Math.abs(n(o,s));o.setFullYear(1584),s.setFullYear(1584);let u=c*(l-+(e(o,s)===-c));return u===0?0:u}export{r as t};

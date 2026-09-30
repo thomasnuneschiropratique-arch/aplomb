@@ -1,0 +1,1 @@
+var e={male:.0694,female:.0668},t={citation:`de Leva P. Adjustments to Zatsiorsky-Seluyanov’s segment inertia parameters. J Biomech. 1996;29(9):1223-1230`,year:1996};function n(t,n,r){return typeof t==`number`&&Number.isFinite(t)&&t>0?t*e[n]:r}function r(e,t,n){let r=Math.max(0,t)/10;return Math.max(e,e+n*r)}export{r as i,t as n,n as r,e as t};

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!--
+      Content-Security-Policy — no network beyond the app's own origin (CLAUDE.md rule 3).
+      script-src   'wasm-unsafe-eval': MediaPipe and yoga-layout (react-pdf) compile WebAssembly.
+                   No 'unsafe-eval': neither MediaPipe, react-pdf nor their dependencies use
+                   eval / new Function (checked on a bundle of both).
+      worker-src   blob:: fflate's asynchronous API (zip, deflate…) runs in blob: workers.
+      style-src    'unsafe-inline': Radix (react-remove-scroll) injects <style> elements.
+      img/media    blob:: photos and videos stored in IndexedDB; data:: small inlined assets.
+      connect-src  blob: data:: fetch() on object URLs / data URLs (canvas, PDF assets).
+      frame-src    blob:: PDF preview.
+      The dev server adds 'unsafe-inline' (React Refresh preamble) and ws:/wss: (HMR) — see
+      devCspRelaxation() in vite.config.ts. Never add them here.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; child-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; font-src 'self'; connect-src 'self' blob: data:; frame-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'" />
+    <meta name="theme-color" content="#305A59" />
+    <meta name="color-scheme" content="light" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Aplomb" />
+    <meta name="application-name" content="Aplomb" />
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/aplomb/icons/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/aplomb/icons/favicon-64.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/aplomb/icons/apple-touch-icon.png" />
+    <!--
+      iOS launch screens. device-width/height are the portrait size in CSS px (they do not swap
+      with orientation). Vite prefixes these public paths with the deployment base.
+    -->
+    <!-- iPad Pro 13 (M4) -->
+    <link rel="apple-touch-startup-image" media="(device-width: 1032px) and (device-height: 1376px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/aplomb/icons/splash-2064x2752.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 1032px) and (device-height: 1376px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/aplomb/icons/splash-2752x2064.png" />
+    <!-- iPad Pro 12.9 / iPad Air 13 -->
+    <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/aplomb/icons/splash-2048x2732.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/aplomb/icons/splash-2732x2048.png" />
+    <!-- iPad Pro 11 (M4) -->
+    <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1210px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/aplomb/icons/splash-1668x2420.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1210px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/aplomb/icons/splash-2420x1668.png" />
+    <!-- iPad Pro 11 -->
+    <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/aplomb/icons/splash-1668x2388.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/aplomb/icons/splash-2388x1668.png" />
+    <!-- iPad Air 10.9–11 / iPad 10.9–11 -->
+    <link rel="apple-touch-startup-image" media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/aplomb/icons/splash-1640x2360.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/aplomb/icons/splash-2360x1640.png" />
+    <!-- iPad 10.2 -->
+    <link rel="apple-touch-startup-image" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/aplomb/icons/splash-1620x2160.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/aplomb/icons/splash-2160x1620.png" />
+    <!-- iPad 9.7 / iPad mini 7.9 -->
+    <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/aplomb/icons/splash-1536x2048.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/aplomb/icons/splash-2048x1536.png" />
+    <!-- iPad mini 8.3 -->
+    <link rel="apple-touch-startup-image" media="(device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/aplomb/icons/splash-1488x2266.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/aplomb/icons/splash-2266x1488.png" />
+    <!-- iPhone 14 Pro Max / 15 Plus / 15 Pro Max / 16 Plus -->
+    <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/aplomb/icons/splash-1290x2796.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/aplomb/icons/splash-2796x1290.png" />
+    <!-- iPhone 14 Pro / 15 / 15 Pro / 16 -->
+    <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/aplomb/icons/splash-1179x2556.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/aplomb/icons/splash-2556x1179.png" />
+    <!-- iPhone 12 / 13 / 14 -->
+    <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/aplomb/icons/splash-1170x2532.png" />
+    <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/aplomb/icons/splash-2532x1170.png" />
+    <title>Aplomb — Cabinet Chiropratique Thomas Nunes</title>
+    <script type="module" crossorigin src="/aplomb/assets/index-BZDeo_q0.js"></script>
+    <link rel="modulepreload" crossorigin href="/aplomb/assets/react-DB-4Zxce.js">
+    <link rel="modulepreload" crossorigin href="/aplomb/assets/preload-helper-CE8rG_S1.js">
+    <link rel="modulepreload" crossorigin href="/aplomb/assets/tokens-BN48E7nR.js">
+    <link rel="modulepreload" crossorigin href="/aplomb/assets/tslib.es6-cNg7zjju.js">
+    <link rel="modulepreload" crossorigin href="/aplomb/assets/react-DUXHritp.js">
+    <link rel="modulepreload" crossorigin href="/aplomb/assets/ui-DqsAadjt.js">
+    <link rel="modulepreload" crossorigin href="/aplomb/assets/defaults-BnF5A5mL.js">
+    <link rel="modulepreload" crossorigin href="/aplomb/assets/types-Cie-K8QH.js">
+    <link rel="modulepreload" crossorigin href="/aplomb/assets/sessions-DcNDV3Ci.js">
+    <link rel="stylesheet" crossorigin href="/aplomb/assets/ui-BbC42mVd.css">
+    <link rel="stylesheet" crossorigin href="/aplomb/assets/index-IvlcUWtx.css">
+  <link rel="manifest" href="/aplomb/manifest.webmanifest"></head>
+  <body>
+    <div id="root"></div>
+    <noscript>Aplomb nécessite JavaScript. Ouvrez l’application depuis Safari ou depuis l’écran d’accueil de l’iPad.</noscript>
+  </body>
+</html>
