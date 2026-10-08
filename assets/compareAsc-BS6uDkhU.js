@@ -1,0 +1,1 @@
+import{L as e}from"./text-CeXBAhZ4.js";function t(t,n){let r=+e(t)-e(n);return r<0?-1:r>0?1:r}export{t};
