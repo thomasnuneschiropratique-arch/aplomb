@@ -1,0 +1,1 @@
+import{i as e}from"./rolldown-runtime-Dd_uD5pT.js";import{t}from"./react-CQOZoUwg.js";import{i as n}from"./imageDetector-rjERA1wP.js";var r=e(t(),1);function i(){(0,r.useEffect)(()=>{n()},[])}export{i as t};
